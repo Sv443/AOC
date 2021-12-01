@@ -13,7 +13,7 @@ async function init()
         validate: num => !isNaN(parseInt(num)) && num > 0 && num < 25,
     });
 
-    const path = resolve(`./${day}/index.js`);
+    const path = resolve(`./day/${day}/index.js`);
 
     importFresh(path);
 }

@@ -6,7 +6,7 @@ const col = colors.fg;
 
 async function run()
 {
-    const rawFile = (await readFile("./1/numbers.txt")).toString();
+    const rawFile = (await readFile("./day/1/numbers.txt")).toString();
     const numbers = rawFile.split(/\n/gm).map(n => parseInt(n));
 
     let increased, incAmt = 0;
