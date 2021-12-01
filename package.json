@@ -1,0 +1,30 @@
+{
+  "name": "sv443-aoc21",
+  "version": "1.0.0",
+  "description": "Advent of Code 2021",
+  "main": "index.js",
+  "bin": "index.js",
+  "scripts": {
+    "start": "node .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sv443/AOC_21.git"
+  },
+  "author": "Sv443",
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/Sv443/AOC_21/issues"
+  },
+  "homepage": "https://github.com/Sv443/AOC_21#readme",
+  "dependencies": {
+    "fs-extra": "^10.0.0",
+    "import-fresh": "^3.3.0",
+    "prompts": "^2.4.2",
+    "svcorelib": "^1.14.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.3.0"
+  }
+}
