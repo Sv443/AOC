@@ -1,7 +1,11 @@
 const { readFile } = require("fs-extra");
+const { resolve } = require("path");
 const { colors } = require("svcorelib");
 
 const col = colors.fg;
+
+const numbersFilePath = resolve("./day/1/numbers.txt");
+
 
 async function run()
 {
@@ -17,9 +21,11 @@ async function run()
     process.exit(0);
 }
 
+//#SECTION result 1
+
 async function getResult1()
 {
-    const rawFile = (await readFile("./day/1/first_half.txt")).toString();
+    const rawFile = (await readFile(numbersFilePath)).toString();
     const numbers = rawFile.split(/\n/gm).map(n => parseInt(n));
 
     let increased, incAmt = 0;
@@ -53,9 +59,11 @@ async function getResult1()
     return incAmt;
 }
 
+//#SECTION result 2
+
 async function getResult2()
 {
-    const rawFile = (await readFile("./day/1/second_half.txt")).toString();
+    const rawFile = (await readFile("./day/1/numbers.txt")).toString();
     const numbers = rawFile.split(/\n/gm).map(n => parseInt(n));
 
     const newNums = [];
