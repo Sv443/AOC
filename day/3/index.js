@@ -1,6 +1,6 @@
 const { readFile } = require("fs-extra");
 const { resolve } = require("path");
-const { colors, reserialize } = require("svcorelib");
+const { colors } = require("svcorelib");
 
 const col = colors.fg;
 
