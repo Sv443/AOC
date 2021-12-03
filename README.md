@@ -15,6 +15,6 @@ Alternatively, use `node day/x`, where x could be any valid day of the advent.
 ### Info
 Code can be found in the [`day`](./day/) folder, under each day's subfolder.  
   
-The latest version is on the branch `day/x`, where x is the current day of the month.  
-I'm doing this to prevent spoiling anyone. If you really want to look at my solutions, you can though.  
-The day after, I will open a pull request to add it to the `master` branch.
+The latest version is on the branch `develop`.  
+I'm doing this to prevent spoiling anyone. If you really want to look at my current day's solution, you can though.  
+The day after, I will add it to the `master` branch.
