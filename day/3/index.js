@@ -62,6 +62,8 @@ function getPart1(lines)
     return powerConsumption;
 }
 
+//#SECTION part 2
+
 /**
  * @param {string[]} linesRaw
  */
