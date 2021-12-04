@@ -20,14 +20,12 @@ async function run()
 {
     const input = await readInput();
 
-    console.log("\n\nCalculating result for part one...\n");
-    const part1 = await getPart1(input);
-    console.log("\n\nCalculating result for part two...\n");
-    const part2 = getPart2(input);
+    console.log("\n\nCalculating results...\n");
+    const { first, last } = await getResults(input);
 
 
-    console.log(`\n\nResult #1: ${col.green}${part1}${col.rst}`);
-    console.log(`Result #2: ${col.green}${part2}${col.rst}\n`);
+    console.log(`\n\nResult #1: ${col.green}${first}${col.rst}`);
+    console.log(`Result #2: ${col.green}${last}${col.rst}\n`);
 }
 
 /**
@@ -84,25 +82,30 @@ async function readInput()
     return result;
 }
 
-//#SECTION part 1
+//#SECTION both parts
 
 /**
  * @param {ParsedInputFile} input
- * @returns {Promise<number>}
+ * @returns {Promise<{first: number, last: number}>}
  */
-function getPart1(input)
+function getResults(input)
 {
     return new Promise(async (res) => {
+        /** The final results */
+        const results = {
+            first: undefined,
+            last: undefined,
+        };
+
         const { numbers, boards } = input;
 
         /** @type {number[]} */
         const drawnNumbers = [];
 
+        const padNum = num => `${num < 10 ? " " : ""}${num}`;
+
         /** @param {number[][]} board */
         const hasCompletedRowCol = board => {
-            // TODO: check for completed row or column, return bool
-            // return drawnNumbers.length == 40;
-
             let bingoed = false;
 
             board.forEach((row, rowIdx) => {
@@ -138,14 +141,34 @@ function getPart1(input)
             return bingoed;
         };
 
-        /** @param {number[][]} board */
-        const calculateResult = board => {
+        // last
+        // 46 11 41 86 21
+        // 31 82 38 23 53
+        // 66 52 39  6  1
+        // 16 95 36  0 69
+        // 28 54 91 99 60
+
+        /**
+         * @param {number[][]} board
+         * @param {number} lastNum
+         */
+        const calculateResult = (board, lastNum) => {
+            const drawnNums = [];
+            let finalNumReached = false;
+            drawnNumbers.forEach(n => {
+                if(finalNumReached)
+                    return;
+
+                drawnNums.push(n);
+
+                if(n === lastNum)
+                    finalNumReached = true;
+            });
+
             const flatBoard = board.flat(1);
-            const notDrawn = flatBoard.filter(fbNum => !drawnNumbers.includes(fbNum));
+            const notDrawn = flatBoard.filter(fbNum => !drawnNums.includes(fbNum));
 
             const sumNotDrawn = notDrawn.reduce((acc, cur) => acc + cur, 0);
-
-            const lastNum = drawnNumbers.at(-1);
 
             const result = sumNotDrawn * lastNum;
 
@@ -154,49 +177,52 @@ function getPart1(input)
             return result;
         };
 
-        process.stdout.write(`${col.green}Drawing numbers:${col.rst}`);
+        let completedBoards = [];
 
         for(const num of numbers)
         {
-            process.stdout.write(`${drawnNumbers.length === 0 ? "" : ","} ${num}`);
-
             drawnNumbers.push(num);
 
             let boardNum = 0;
 
             for(const board of boards)
             {
+                const boardIdx = boardNum;
+
                 boardNum++;
 
                 if(hasCompletedRowCol(board))
                 {
-                    process.stdout.write("\n\n");
+                    if(!completedBoards.find(comp => comp[0] === boardIdx))
+                        completedBoards.push([boardIdx, num]);
+
+                    if(results.first)
+                        continue;
 
                     console.log(`Board ${col.blue}#${boardNum}${col.rst} has completed a row or column after ${col.blue}${drawnNumbers.length}${col.rst} randomly drawn numbers:\n`);
-
-                    const padNum = num => `${num < 10 ? " " : ""}${num}`;
 
                     const boardLines = board.map(line => line.reduce((acc, cur) => acc += `${drawnNumbers.includes(cur) ? col.blue : ""}${padNum(cur)}${col.rst}  `, ""));
 
                     console.log(boardLines.join("\n"));
 
-                    const result = calculateResult(board);
+                    const result = calculateResult(board, drawnNumbers.at(-1));
 
-                    return res(result);
+                    results.first = result;
                 }
             }
         }
+
+        const lastCompleted = completedBoards.at(-1);
+
+        const lastBoard = boards[lastCompleted[0]];
+
+        console.log(`\n\nThe last board to complete a row or column is board ${col.blue}#${lastCompleted[0]}${col.rst}`);
+
+        results.last = calculateResult(lastBoard, lastCompleted[1]);
+
+
+        return res(results);
     });
-}
-
-//#SECTION part 2
-
-/**
- * @param {ParsedInputFile} input
- */
-function getPart2(input)
-{
-    return;
 }
 
 (() => run())();
