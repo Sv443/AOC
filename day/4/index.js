@@ -140,13 +140,6 @@ function getResults(input)
             return bingoed;
         };
 
-        // last
-        // 46 11 41 86 21
-        // 31 82 38 23 53
-        // 66 52 39  6  1
-        // 16 95 36  0 69
-        // 28 54 91 99 60
-
         /**
          * @param {number[][]} board
          * @param {number} lastNum
