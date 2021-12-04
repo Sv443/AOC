@@ -18,12 +18,12 @@ const inputFilePath = resolve("./day/4/input.txt");
 
 async function run()
 {
-    const { numbers, boards } = readInput();
+    const input = await readInput();
 
     console.log("\n\nCalculating result for part one...\n");
-    const part1 = getPart1();
+    const part1 = await getPart1(input);
     console.log("\n\nCalculating result for part two...\n");
-    const part2 = getPart2();
+    const part2 = getPart2(input);
 
 
     console.log(`\n\nResult #1: ${col.green}${part1}${col.rst}`);
@@ -53,14 +53,16 @@ async function readInput()
 
         lineNbr++;
 
-        console.log(`${col.yellow}DBG/${lineNbr}:${col.rst} ${trimmedLine}`);
+        // console.log(`${col.yellow}DBG/${lineNbr}:${col.rst} ${trimmedLine}`);
 
         if(lineNbr === 1) // random bingo numbers
+        {
             result.numbers = trimmedLine.split(/,/g).map(n => parseInt(n));
-        else if(lineNbr > 2)
+        }
+        else if(lineNbr > 2) // part of the boards or a blank line between them
         {
             if(!trimmedLine.match(/^.*\d.*$/))
-                continue;
+                continue; // if blank line, ignore
 
             if(!Array.isArray(result.boards[curBoardIdx]))
                 result.boards[curBoardIdx] = [];
@@ -84,14 +86,115 @@ async function readInput()
 
 //#SECTION part 1
 
-function getPart1()
+/**
+ * @param {ParsedInputFile} input
+ * @returns {Promise<number>}
+ */
+function getPart1(input)
 {
-    return;
+    return new Promise(async (res) => {
+        const { numbers, boards } = input;
+
+        /** @type {number[]} */
+        const drawnNumbers = [];
+
+        /** @param {number[][]} board */
+        const hasCompletedRowCol = board => {
+            // TODO: check for completed row or column, return bool
+            // return drawnNumbers.length == 40;
+
+            let bingoed = false;
+
+            board.forEach((row, rowIdx) => {
+                if(bingoed) // short-circuit
+                    return;
+
+                // check if row is bingoed:
+                if(row.filter(num => drawnNumbers.includes(num)).length === 5)
+                    bingoed = true;
+
+                // check if column is bingoed:
+                row.forEach((num, colIdx) => {
+                    let colMatches = 0;
+
+                    if(drawnNumbers.includes(num))
+                        colMatches++;
+
+                    board.forEach((row, i) => {
+                        if(i === rowIdx)
+                            return;
+
+                        const checkNum = row[colIdx];
+
+                        if(drawnNumbers.includes(checkNum))
+                            colMatches++;
+                    });
+
+                    if(colMatches === 5)
+                        bingoed = true;
+                });
+            });
+
+            return bingoed;
+        };
+
+        /** @param {number[][]} board */
+        const calculateResult = board => {
+            const flatBoard = board.flat(1);
+            const notDrawn = flatBoard.filter(fbNum => !drawnNumbers.includes(fbNum));
+
+            const sumNotDrawn = notDrawn.reduce((acc, cur) => acc + cur, 0);
+
+            const lastNum = drawnNumbers.at(-1);
+
+            const result = sumNotDrawn * lastNum;
+
+            console.log(`\nResult: ${sumNotDrawn} * ${lastNum} = ${col.blue}${result}${col.rst}   ${col.black}(result = sumNotDrawnNums * lastDrawnNum)${col.rst}`);
+
+            return result;
+        };
+
+        process.stdout.write(`${col.green}Drawing numbers:${col.rst}`);
+
+        for(const num of numbers)
+        {
+            process.stdout.write(`${drawnNumbers.length === 0 ? "" : ","} ${num}`);
+
+            drawnNumbers.push(num);
+
+            let boardNum = 0;
+
+            for(const board of boards)
+            {
+                boardNum++;
+
+                if(hasCompletedRowCol(board))
+                {
+                    process.stdout.write("\n\n");
+
+                    console.log(`Board ${col.blue}#${boardNum}${col.rst} has completed a row or column after ${col.blue}${drawnNumbers.length}${col.rst} randomly drawn numbers:\n`);
+
+                    const padNum = num => `${num < 10 ? " " : ""}${num}`;
+
+                    const boardLines = board.map(line => line.reduce((acc, cur) => acc += `${drawnNumbers.includes(cur) ? col.blue : ""}${padNum(cur)}${col.rst}  `, ""));
+
+                    console.log(boardLines.join("\n"));
+
+                    const result = calculateResult(board);
+
+                    return res(result);
+                }
+            }
+        }
+    });
 }
 
 //#SECTION part 2
 
-function getPart2()
+/**
+ * @param {ParsedInputFile} input
+ */
+function getPart2(input)
 {
     return;
 }
