@@ -11,11 +11,10 @@ async function run()
 {
     console.log("\nCalculating result for the first half...\n");
     const result1 = await getResult1();
-    console.log("\nCalculating result for the second half...\n");
+    console.log("\n\nCalculating result for the second half...\n");
     const result2 = await getResult2();
 
     console.log(`\n\nResult #1: Increased ${col.green}${result1}${col.rst} times`);
-    console.log();
     console.log(`Result #2: Increased ${col.green}${result2}${col.rst} times\n`);
 
     process.exit(0);
@@ -33,10 +32,10 @@ async function getResult1()
     numbers.forEach((num, i) => {
         let textCol = "";
 
+        const lastNum = i !== 0 ? numbers[i - 1] : undefined;
+
         if(increased !== undefined)
         {
-            const lastNum = numbers[i - 1];
-
             if(num > lastNum)
             {
                 incAmt++;
@@ -50,7 +49,8 @@ async function getResult1()
             }
         }
 
-        console.log(`${num}  ${textCol}(${increased !== undefined ? (increased ? "increased" : "decreased") : "N/A"})${col.rst}`);
+        if(i < 10 || i > numbers.length - 10)
+            console.log(`${lastNum ? lastNum : 0} -> ${num}  ${textCol}(${increased !== undefined ? (increased ? "increased" : "decreased") : "N/A"})${col.rst}`);
 
         if(increased === undefined)
             increased = false;
@@ -91,7 +91,8 @@ async function getResult2()
             textCol = col.blue;
         }
 
-        console.log(`${num}  ${textCol}(${increased !== undefined ? (increased ? "increased" : "decreased") : "N/A"})${col.rst}`);
+        if(i < 10 || i > newNums.length - 10)
+            console.log(`${previous ? previous : 0} -> ${num}  ${textCol}(${increased !== undefined ? (increased ? "increased" : "decreased") : "N/A"})${col.rst}`);
     });
 
     return incAmt;
