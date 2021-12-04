@@ -1,4 +1,3 @@
-const { readFile } = require("fs-extra");
 const { resolve } = require("path");
 const { colors } = require("svcorelib");
 const { createInterface  } = require("readline");
