@@ -48,6 +48,8 @@ async function init()
         process.exit(1);
     }
 
+    console.log(`\n${col.blue}>> Running code of day ${chosenDay}${col.rst}\n`);
+
     importFresh(path);
 }
 

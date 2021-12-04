@@ -7,9 +7,9 @@
 ### To run
 
 Clone with git or download and extract (green button).  
-Install Node.js (preferably v14) and open a terminal in the project directory.  
+Install Node.js (preferably v14+) and open a terminal in the project directory.  
 Install dependencies with `npm i`, then use the command `npm start`  
-It will prompt you to enter the day of which to run the code.  
+It will prompt you to enter the day of which to run the code. Press ESC or enter `0` to run the latest day.  
 Alternatively, use `node day/x`, where x could be any valid day of the advent.
 
 <br>
