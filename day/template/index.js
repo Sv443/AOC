@@ -11,7 +11,7 @@ async function run()
     // const { first, second } = await getResults();
 
     // console.log(`\n\nResult #1: ${col.green}${first}${col.rst}`);
-    // console.log(`Result #2: ${col.green}${last}${col.rst}\n`);
+    // console.log(`Result #2: ${col.green}${second}${col.rst}\n`);
 }
 
 //#SECTION part 1
