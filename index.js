@@ -1,11 +1,16 @@
 const prompt = require("prompts");
-const { resolve } = require("path");
+const { resolve, join } = require("path");
 
 const importFresh = require("import-fresh");
-const { readdir } = require("fs-extra");
-const { filesystem, colors } = require("svcorelib");
+const { readdir, copy, mkdirs } = require("fs-extra");
+const { filesystem, colors, pause } = require("svcorelib");
 
 const col = colors.fg;
+
+const paths = {
+    daysFolder: resolve("./day/"),
+    templatePath: resolve("./day/template/"),
+};
 
 
 async function init()
@@ -29,7 +34,9 @@ async function init()
     {
         const dayFolders = await readdir(resolve("./day/"));
 
-        latestDay = dayFolders.sort((a, b) => {
+        const truncDayFolders = dayFolders.filter(fold => fold !== "template");
+
+        latestDay = truncDayFolders.map(d => parseInt(d)).sort((a, b) => {
             if(a < b)
                 return -1;
             else if(a > b)
@@ -38,19 +45,41 @@ async function init()
         }).at(-1);
     }
 
-    const chosenDay = latestDay || day;
-
-    const path = resolve(`./day/${chosenDay}/index.js`);
-
-    if(!(await filesystem.exists(path)))
+    if(process.argv.includes("create") || process.argv.includes("new"))
     {
-        console.error(`\n${col.red}Error: Can't find script file of day ${chosenDay} in path '${path}'${col.rst}\n`);
-        process.exit(1);
+        const chosenDay = latestDay + 1 || day;
+
+        const dayFolderPath = join(paths.daysFolder, String(chosenDay));
+
+        await mkdirs(dayFolderPath);
+
+        await copy(paths.templatePath, dayFolderPath, { recursive: true });
+
+        console.log(`Created day ${col.green}${chosenDay}${col.rst} subfolder at path ${col.green}./day/${chosenDay}/${col.rst}\n`);
+
+        setTimeout(() => process.exit(0), 6000);
+
+        await pause("Press any key to exit (or wait 6s)…");
+
+        process.exit(0);
     }
+    else
+    {
+        const chosenDay = latestDay || day;
 
-    console.log(`\n${col.blue}>> Running code of day ${chosenDay}${col.rst}\n`);
+        const path = resolve(`./day/${chosenDay}/index.js`);
 
-    importFresh(path);
+        if(!(await filesystem.exists(path)))
+        {
+            console.error(`\n${col.red}Error: Can't find script file of day ${chosenDay} in path '${path}'${col.rst}\n`);
+            process.exit(1);
+        }
+
+        console.log(`\n${col.blue}>> Running code of day ${chosenDay}${col.rst}\n`);
+
+        importFresh(path);
+        return;
+    }
 }
 
 (() => init())();

@@ -20,7 +20,21 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "Prompt",
+            "name": "Create new day",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/index.js",
+            "console": "integratedTerminal",
+            "args": [
+                "create",
+                "-l"
+            ]
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Prompt day",
             "skipFiles": [
                 "<node_internals>/**"
             ],
