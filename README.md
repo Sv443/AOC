@@ -32,11 +32,11 @@ The day after, I will add it to the `master` branch.
 >
 > <br>
 >
-> | Command      | Description                                                                                               |
-> | :----------- | :-------------------------------------------------------------------------------------------------------- |
-> | `npm start`  | Starts a prompt, asking you which day's code to run. Press ESC or enter `0` to run the latest day's code. |
-> | `node . -l`  | Directly runs the latest day's code.                                                                      |
-> | `node day/x` | Directly runs the code of day `x`. Argument `-l` aka `--latest` takes precedence over the specified day.  |
+> | Command      | Description                                                                                                                |
+> | :----------- | :------------------------------------------------------------------------------------------------------------------------- |
+> | `npm start`  | Starts a prompt, asking you which day's code to run. Press ESC or enter `0` to run the latest day's code - Alias: `node .` |
+> | `node . -l`  | Directly runs the latest day's code.                                                                                       |
+> | `node day/x` | Directly runs the code of day `x`. Argument `-l` aka `--latest` takes precedence over the specified day.                   |
 
 <br>
 
