@@ -26,6 +26,7 @@ module.exports = {
             "always",
         ],
         "no-unused-vars": "warn",
+        "no-async-promise-executor": "off",
         "comma-dangle": [
             "error",
             "always-multiline",
