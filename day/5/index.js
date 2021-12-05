@@ -87,9 +87,9 @@ function getPart1(input)
         const largestY = Math.max(line.from.y, line.to.y);
 
         if(gridSize[0] < largestX)
-            gridSize[0] = largestX;
+            gridSize[0] = Math.max(largestX, 1000);
         if(gridSize[1] < largestY)
-            gridSize[1] = largestY;
+            gridSize[1] = Math.max(largestY, 1000);
     });
 
     console.log("Grid size:", gridSize.join("x"));
@@ -110,30 +110,38 @@ function getPart1(input)
 
     // increment grid numbers based on input lines
 
+    console.log(input);
+
     input.forEach((line, i) => {
-        const x = [ Math.min(line.from.x, line.to.x), Math.max(line.from.x, line.to.x) ];
-        const y = [ Math.min(line.from.y, line.to.y), Math.max(line.from.x, line.to.x) ];
+        const { from, to } = line;
 
-        i == 0 && console.log(`Current line: [${line.from.x}, ${line.from.y}], [${line.to.x}, ${line.to.y}]`);
+        const x = [ Math.min(from.x, to.x), Math.max(from.x, to.x) ];
+        const y = [ Math.min(from.y, to.y), Math.max(from.x, to.x) ];
 
-        for(let yPos = y[0]; yPos < y[1]; yPos++)
-        {
+        i == 0 && console.log(`Current line: [${from.x}, ${from.y}], [${to.x}, ${to.y}]`);
+
+        if(from.x === to.x)
+            for(let yPos = y[0]; yPos < y[1]; yPos++)
+                grid[yPos][from.x] += 1;
+        
+        else if(from.y === to.y)
             for(let xPos = x[0]; xPos < x[1]; xPos++)
-            {
-                i == 0 && console.log(`Incrementing pos ${xPos}, ${yPos}`);
-
-                grid[yPos][xPos] += 1;
-            }
-        }
+                grid[from.y][xPos] += 1;
     });
 
     // count grid numbers >= 2
 
     let unsafeTilesAmt = 0;
 
-    grid.forEach(line => {
-        line.forEach(num => {
-            if(num > 1)
+    grid.forEach((line, y) => {
+        line.forEach((num, x) => {
+            if(typeof num !== "number")
+                num = parseInt(num);
+
+            if(isNaN(num))
+                throw new TypeError(`Grid contains non-number at x=${x}, y=${y}`);
+
+            if(num >= 2)
                 unsafeTilesAmt++;
         });
     });
