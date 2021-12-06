@@ -5,7 +5,7 @@ const { createInterface } = require("readline");
 
 // const col = colors.fg;
 
-const inputFilePath = resolve("./day/5/input.txt");
+const inputFilePath = resolve("./day/5/input_s.txt"); //#DEBUG
 
 
 /**
