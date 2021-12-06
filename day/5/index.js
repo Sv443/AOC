@@ -1,11 +1,11 @@
 const { createReadStream } = require("fs-extra");
 const { resolve } = require("path");
 const { createInterface } = require("readline");
-const { colors } = require("svcorelib");
+const { colors, reserialize } = require("svcorelib");
 
 const col = colors.fg;
 
-const inputFilePath = resolve("./day/5/input_s.txt"); //#DEBUG
+const inputFilePath = resolve("./day/5/input.txt"); //#DEBUG
 
 
 /**
@@ -26,11 +26,11 @@ async function run()
     const input = await readInput();
 
     console.log("\n\nCalculating results...\n");
-    const first = getPart1(input);
+    const { first, second } = getResults(input);
     // const second = await getPart2(input);
 
     console.log(`\n\nResult #1: ${col.green}${first}${col.rst}`);
-    // console.log(`Result #2: ${col.green}${second}${col.rst}\n`);
+    console.log(`Result #2: ${col.green}${second}${col.rst}\n`);
 }
 
 /**
@@ -76,20 +76,27 @@ async function readInput()
 
 /**
  * @param {ParsedInput[]} input 
+ * @returns {{ first: number, second: number }}
  */
-function getPart1(input)
+function getResults(input)
 {
+    // filter out diagonal lines
+    const inputNoDiag = input.filter(line => line.from.x === line.to.x || line.from.y === line.to.y);
+
+    /** `[x, y]` or `[w, h]` */
     const gridSize = [0, 0];
 
     // calculate grid size
-    input.forEach(line => {
+    inputNoDiag.forEach(line => {
         const largestX = Math.max(line.from.x, line.to.x);
         const largestY = Math.max(line.from.y, line.to.y);
 
         if(gridSize[0] < largestX)
-            gridSize[0] = Math.max(largestX, 1000);
+            // gridSize[0] = Math.max(largestX, 1000);
+            gridSize[0] = largestX;
         if(gridSize[1] < largestY)
-            gridSize[1] = Math.max(largestY, 1000);
+            // gridSize[1] = Math.max(largestY, 1000);
+            gridSize[1] = largestY;
     });
 
     console.log("Grid size:", gridSize.join("x"));
@@ -108,32 +115,53 @@ function getPart1(input)
         }
     }
 
+    const grids = {
+        /** @type {number[][]} */
+        first: reserialize(grid),
+        /** @type {number[][]} */
+        second: reserialize(grid),
+    };
+
     // increment grid numbers based on input lines
 
-    console.log(input);
-
-    input.forEach((line, i) => {
+    // part 1
+    inputNoDiag.forEach((line) => {
         const { from, to } = line;
 
         const x = [ Math.min(from.x, to.x), Math.max(from.x, to.x) ];
-        const y = [ Math.min(from.y, to.y), Math.max(from.x, to.x) ];
+        const y = [ Math.min(from.y, to.y), Math.max(from.y, to.y) ];
 
-        i == 0 && console.log(`Current line: [${from.x}, ${from.y}], [${to.x}, ${to.y}]`);
+        // i == 0 && console.log(`Current line: [${from.x}, ${from.y}] -> [${to.x}, ${to.y}]`);
 
         if(from.x === to.x)
-            for(let yPos = y[0]; yPos < y[1]; yPos++)
-                grid[yPos][from.x] += 1;
-        
+            for(let yPos = y[0]; yPos < y[1] + 1; yPos++)
+                grids.first[yPos][from.x] += 1;
+
         else if(from.y === to.y)
-            for(let xPos = x[0]; xPos < x[1]; xPos++)
-                grid[from.y][xPos] += 1;
+            for(let xPos = x[0]; xPos < x[1] + 1; xPos++)
+                grids.first[from.y][xPos] += 1;
+    });
+
+    // part 2
+    input.forEach(line => {
+        const { from, to } = line;
+
+        const x = [ Math.min(from.x, to.x), Math.max(from.x, to.x) ];
+        const y = [ Math.min(from.y, to.y), Math.max(from.y, to.y) ];
+
+        // i == 0 && console.log(`Current line: [${from.x}, ${from.y}] -> [${to.x}, ${to.y}]`);
+
+        // TODO:
     });
 
     // count grid numbers >= 2
 
-    let unsafeTilesAmt = 0;
+    const unsafeTilesAmt = {
+        first: 0,
+        second: 0,
+    };
 
-    grid.forEach((line, y) => {
+    grids.first.forEach((line, y) => {
         line.forEach((num, x) => {
             if(typeof num !== "number")
                 num = parseInt(num);
@@ -142,7 +170,7 @@ function getPart1(input)
                 throw new TypeError(`Grid contains non-number at x=${x}, y=${y}`);
 
             if(num >= 2)
-                unsafeTilesAmt++;
+                unsafeTilesAmt.first++;
         });
     });
 
