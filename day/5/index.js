@@ -5,7 +5,7 @@ const { colors, reserialize } = require("svcorelib");
 
 const col = colors.fg;
 
-const inputFilePath = resolve("./day/5/input.txt"); //#DEBUG
+const inputFilePath = resolve("./day/5/input_s.txt"); //#DEBUG
 
 
 /**
@@ -152,6 +152,29 @@ function getResults(input)
         // i == 0 && console.log(`Current line: [${from.x}, ${from.y}] -> [${to.x}, ${to.y}]`);
 
         // TODO:
+
+        if(from.x !== to.x && from.y !== to.y)
+        {
+            // diagonal
+            process.stdout.write();
+        }
+        else
+        {
+            if(from.x === to.x)
+                for(let yPos = y[0]; yPos < y[1] + 1; yPos++)
+                    grids.second[yPos][from.x] += 1;
+
+            else if(from.y === to.y)
+                for(let xPos = x[0]; xPos < x[1] + 1; xPos++)
+                    grids.second[from.y][xPos] += 1;
+        }
+
+        /** Direction of the iteration on the x axis (1 = right, -1 = left) */
+        // let xDir =  ? 1 : -1;
+
+        // for(let xPos = x[0])
+
+        //     X \ /
     });
 
     // count grid numbers >= 2
