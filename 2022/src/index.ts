@@ -18,10 +18,10 @@ async function run() {
             type: "select",
             name: "runDay",
             message: "Choose which day to run",
-            choices: days.map(p => ({ title: `Day ${p.day}`, value: p.day })),
+            choices: days.map(day => ({ title: `Day ${day}`, value: day })),
         });
 
-        runDayNum = runDay;
+        runDayNum = parseInt(runDay);
     }
     else
         runDayNum = parseInt(dayArg);
@@ -38,10 +38,8 @@ async function run() {
 
 async function getDays() {
     return (await readdir(daysPath))
-        .sort((a, b) => a.localeCompare(b))
-        .map(folderName => ({
-            day: folderName,
-        }));
+        .sort((a, b) => parseInt(a) < parseInt(b) ? -1 : 1)
+        .map(day => parseInt(day));
 }
 
 run();
