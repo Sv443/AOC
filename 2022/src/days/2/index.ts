@@ -11,8 +11,12 @@ import { resolve } from "path";
 // draw: 3 points
 // win:  6 points
 
+const bigFile = false;
+const inputPath = resolve(`./src/days/2/input${bigFile ? "_chungus" : ""}.txt`);
+
 async function partOne() {
-    const input = String(await readFile(resolve("./src/days/2/input.txt")));
+    const startTs = Date.now();
+    const input = String(await readFile(inputPath));
     const lines = input.split(/\n/gm);
     const pairs = lines.map(l => ([ l.split(/\s/)[0]!, l.split(/\s/)[1]! ]));
 
@@ -21,6 +25,8 @@ async function partOne() {
         score += calcScore(opp, my);
 
     console.log(k.green("Part 1 score: ") + k.yellow(score));
+    console.log(k.gray("Time:         " + ((Date.now() - startTs) / 1000).toFixed(3) + "s"));
+    console.log();
 }
 
 function isDraw(opp: string, my: string) {
@@ -77,7 +83,8 @@ const oppToMy: Record<string, string> = {
 };
 
 async function partTwo() {
-    const input = String(await readFile(resolve("./src/days/2/input.txt")));
+    const startTs = Date.now();
+    const input = String(await readFile(inputPath));
     const lines = input.split(/\n/gm);
     const pairs = lines.map(l => ([ l.split(/\s/)[0]!, l.split(/\s/)[1]! ]));
 
@@ -99,6 +106,7 @@ async function partTwo() {
     }
 
     console.log(k.green("Part 2 score: ") + k.yellow(score));
+    console.log(k.gray("Time:         " + ((Date.now() - startTs) / 1000).toFixed(3) + "s"));
     console.log();
 }
 
