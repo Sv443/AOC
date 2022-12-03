@@ -3,7 +3,7 @@ import k from "kleur";
 import { resolve } from "path";
 import { halves, removeDuplicates } from "svcorelib";
 
-const bigFile = true;
+const bigFile = false;
 const inputPath = resolve(`./src/days/3/input${bigFile ? "_chungus" : ""}.txt`);
 
 async function partOne() {
