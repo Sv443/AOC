@@ -1,6 +1,7 @@
 import { pathExists, readFile } from "fs-extra";
 import { resolve } from "path";
 import { performance } from "perf_hooks";
+import k from "kleur";
 
 /** Parses the given input file and returns its lines (if splitRegex is left on its default) */
 export async function getInput(day: number, bigFile = false, allowEmptyLines = false, splitRegex = /\n/gm) {
@@ -23,15 +24,45 @@ export async function runSequentially(...promises: (() => Promise<unknown>)[]) {
 
 /** Measures performance from instantiation to execution of `stop()` */
 export class PerfMeter {
-    public readonly startTs;
+    public startTs;
+    public fsTs = 0;
+    public remapTs = 0;
+    public allDoneTs = 0;
+
+    readonly decimals;
 
     /** Measures performance from instantiation to execution of `stop()` */
-    constructor() {
+    constructor(decimals = 3) {
         this.startTs = performance.now();
+        this.decimals = decimals;
     }
 
-    /** Stops the PerfMeter and returns the measured time in seconds */
-    public stop(decimals = 3) {
-        return parseFloat(((performance.now() - this.startTs) / 1000).toFixed(decimals));
+    /** Call to measure when all file system stuff is done */
+    public fsDone() {
+        this.fsTs = performance.now();
+    }
+
+    /** Call to measure when data remapping is done */
+    public remapDone() {
+        this.remapTs = performance.now();
+    }
+
+    /** Call to measure when everything is done */
+    public allDone() {
+        this.allDoneTs = performance.now();
+    }
+
+    /** Prints the measured times in seconds */
+    public print() {
+        console.log(k.gray([
+            "> Performance",
+            `>   No FS:    ${this.fsTs ? this.formatOffsetTS(this.allDoneTs - this.fsTs) : "--- "}s`,
+            `>   No Remap: ${this.remapTs ? this.formatOffsetTS(this.allDoneTs - this.remapTs) : "--- "}s`,
+            `>   Total:    ${this.formatOffsetTS(this.allDoneTs - this.startTs)}s`,
+        ].join("\n")));
+    }
+
+    private formatOffsetTS(timestamp: number) {
+        return parseFloat((timestamp / 1000).toFixed(this.decimals));
     }
 }
