@@ -16,13 +16,13 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Specific day",
-            "program": "${workspaceFolder}/src/days/1/index.ts",
+            "name": "Latest day",
+            "program": "${workspaceFolder}/src/index.ts",
             "preLaunchTask": "prelaunch",
             "outFiles": ["${workspaceFolder}/out/**/*.js"],
             "console": "integratedTerminal",
             "args": [
-                "-h"
+                "-l"
             ]
         }
     ]

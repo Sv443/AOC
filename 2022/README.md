@@ -12,4 +12,5 @@ Install Node.js (v16+) and open a terminal in the project directory.
 Install dependencies with `npm i`  
   
 Run a specific day's code with `npm start <day>`  
-Or open a prompt by just running `npm start`
+Run the latest day's code with `npm start -- -l`  
+Or open a prompt to choose the day by just running `npm start`
