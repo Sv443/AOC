@@ -4,7 +4,7 @@ import { resolve } from "path";
 
 type Range = [number, number];
 
-const bigFile = false;
+const bigFile = true;
 const inputPath = resolve(`./src/days/4/input${bigFile ? "_chungus" : ""}.txt`);
 
 async function partOne() {
@@ -52,8 +52,7 @@ async function partTwo() {
 }
 
 function doRangesOverlap(range1: Range, range2: Range) {
-    return (range1[0] >= range2[0] && range1[0] <= range2[1])
-        || (range1[1] >= range2[0] && range1[1] <= range2[1]);
+    return Math.max(range1[0], range2[0]) <= Math.min(range1[1], range2[1]);
 }
 
 (async () => {
