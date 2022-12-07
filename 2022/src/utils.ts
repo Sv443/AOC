@@ -56,9 +56,9 @@ export class PerfMeter {
     public print() {
         console.log(k.gray([
             "> Performance",
-            `>   No FS:    ${this.fsTs ? this.formatOffsetTS(this.allDoneTs - this.fsTs) : "--- "}s`,
-            `>   No Remap: ${this.remapTs ? this.formatOffsetTS(this.allDoneTs - this.remapTs) : "--- "}s`,
-            `>   Total:    ${this.formatOffsetTS(this.allDoneTs - this.startTs)}s`,
+            `>   Total:         ${this.formatOffsetTS(this.allDoneTs - this.startTs)}s`,
+            `>   No FS:         ${this.fsTs ? this.formatOffsetTS(this.allDoneTs - this.fsTs) : "--- "}s`,
+            `>   No FS & Remap: ${this.remapTs ? this.formatOffsetTS(this.allDoneTs - this.remapTs) : "--- "}s`,
         ].join("\n")));
     }
 
