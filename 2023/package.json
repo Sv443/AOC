@@ -1,0 +1,30 @@
+{
+  "name": "@sv443/aoc-2022",
+  "version": "1.0.0",
+  "description": "Advent of Code",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "tsc && node --enable-source-maps out/src/index.js"
+  },
+  "author": "Sv443",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "fs-extra": "^11.1.0",
+    "kleur": "^4.1.5",
+    "prompts": "^2.4.2",
+    "svcorelib": "^1.18.1"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
+    "@types/node": "^18.11.10",
+    "@types/prompts": "^2.4.1",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "eslint": "^8.28.0",
+    "typescript": "^4.9.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sv443/AOC.git"
+  }
+}
