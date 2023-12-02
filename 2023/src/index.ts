@@ -50,7 +50,8 @@ async function run() {
 async function getDays() {
   return (await readdir(daysPath))
     .sort((a, b) => parseInt(a) < parseInt(b) ? -1 : 1)
-    .map(day => parseInt(day));
+    .map(day => parseInt(day))
+    .filter(day => !isNaN(day));
 }
 
 run();
