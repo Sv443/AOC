@@ -2,7 +2,7 @@ import { readdir } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import k from "kleur";
 import prompt from "prompts";
-import { exists } from "./utils";
+import { exists } from "./utils.js";
 
 const daysPath = resolve("./src/days/");
 const outDaysPath = resolve("./out/src/days/");

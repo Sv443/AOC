@@ -1,7 +1,7 @@
 import k from "kleur";
-import { getInput } from "../../utils";
+import { getInput } from "../../utils.js";
 
-const aocDay = import.meta.url.split("/").pop();
+const aocDay = Number(import.meta.url.split("/").at(-2)! ?? 0);
 
 async function run() {
   const input = await getInput(aocDay, "");

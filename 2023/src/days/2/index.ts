@@ -1,5 +1,5 @@
 import k from "kleur";
-import { getInput } from "../../utils";
+import { getInput } from "../../utils.js";
 
 const cubesInBag = {
   red: 12,

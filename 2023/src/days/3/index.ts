@@ -1,6 +1,6 @@
 import k from "kleur";
 import { clamp } from "svcorelib";
-import { getInput } from "../../utils";
+import { getInput } from "../../utils.js";
 
 const symbolRegex = /[^\d.]/gm;
 

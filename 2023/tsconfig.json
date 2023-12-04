@@ -2,10 +2,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "target": "ES2022",
-    "module": "ESNext",
+    "module": "NodeNext",
     "rootDir": ".",
     "outDir": "./out/",
-    "moduleResolution": "node",
+    "moduleResolution": "NodeNext",
     "sourceMap": true,
     "useDefineForClassFields": true,
     "allowJs": false,

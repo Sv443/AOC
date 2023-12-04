@@ -1,5 +1,5 @@
 import k from "kleur";
-import { getInput } from "../../utils";
+import { getInput } from "../../utils.js";
 
 const digitNames = {
   one: 1, two: 2, three: 3, four: 4, five: 5,
