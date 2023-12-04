@@ -1,13 +1,13 @@
-import { pathExists, readFile } from "fs-extra";
-import { resolve } from "path";
-import { performance } from "perf_hooks";
+import { resolve } from "node:path";
+import { performance } from "node:perf_hooks";
+import { access, readFile, constants as fsConstants } from "node:fs/promises";
 import k from "kleur";
 
 /** Parses the given input file and returns its lines (if splitRegex is left on its default) */
 export async function getInput(day: number, suffix: string | number | undefined = undefined, allowEmptyLines = false, splitRegex = /\n/gm) {
   const inputPath = resolve(`./src/days/${day}/input${suffix ?? ""}.txt`);
 
-  if(!pathExists(inputPath))
+  if(!(await exists(inputPath)))
     throw new Error(`Can't get lines from input${suffix ?? ""}.txt for day ${day} as file doesn't exist`);
 
   const lines = String(await readFile(inputPath))
@@ -25,6 +25,17 @@ export async function runSequentially(...promises: ((() => Promise<unknown>) | P
       await prom();
     else
       await prom;
+}
+
+/** Returns whether the file exists and is accessible using the provided mode. */
+export async function exists(path: string, mode = fsConstants.R_OK) {
+  try {
+    await access(path, mode);
+    return true;
+  }
+  catch {
+    return false;
+  }
 }
 
 /** Measures performance from instantiation to execution of `stop()` */

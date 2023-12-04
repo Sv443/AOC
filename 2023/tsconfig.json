@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "target": "ES2022",
-    "module": "CommonJS",
+    "module": "ESNext",
     "rootDir": ".",
     "outDir": "./out/",
     "moduleResolution": "node",

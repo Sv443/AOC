@@ -1,9 +1,11 @@
 import k from "kleur";
 import { getInput } from "../../utils";
 
+const aocDay = import.meta.url.split("/").pop();
+
 async function run() {
-  const input = await getInput(3, "");
-  const inputS = await getInput(3, "_s");
+  const input = await getInput(aocDay, "");
+  const inputS = await getInput(aocDay, "_s");
 
   //#SECTION part 1
   let sum1 = 0;

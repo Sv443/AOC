@@ -1,7 +1,8 @@
-import { pathExists, readdir } from "fs-extra";
+import { readdir } from "node:fs/promises";
+import { join, resolve } from "node:path";
 import k from "kleur";
-import { join, resolve } from "path";
 import prompt from "prompts";
+import { exists } from "./utils";
 
 const daysPath = resolve("./src/days/");
 const outDaysPath = resolve("./out/src/days/");
@@ -38,7 +39,7 @@ async function run() {
   }
 
   const importPath = join(outDaysPath, `/${runDayNum}/index.js`);
-  if(!(await pathExists(importPath))) {
+  if(!(await exists(importPath))) {
     console.error(k.red(`Couldn't run day ${runDayNum}:\n`) + `File '${importPath}' doesn't exist\n`);
     process.exit(1);
   }
