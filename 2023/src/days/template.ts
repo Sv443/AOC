@@ -4,8 +4,8 @@ import { getInput } from "../../utils.js";
 const aocDay = Number(import.meta.url.split("/").at(-2)! ?? 0);
 
 async function run() {
-  const input = await getInput(aocDay, "");
-  const inputS = await getInput(aocDay, "_s");
+  // const input = await getInput(aocDay, "");
+  const input = await getInput(aocDay, "_s");
 
   //#SECTION part 1
   let sum1 = 0;
