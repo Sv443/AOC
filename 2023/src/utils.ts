@@ -38,7 +38,7 @@ export async function exists(path: string, mode = fsConstants.R_OK) {
   }
 }
 
-/** Measures performance from instantiation to execution of `stop()` */
+/** Measures performance from instantiation to execution of `allDone()` */
 export class PerfMeter {
   public startTs;
   public fsTs = 0;
@@ -47,7 +47,7 @@ export class PerfMeter {
 
   readonly decimals;
 
-  /** Measures performance from instantiation to execution of `stop()` */
+  /** Measures performance from instantiation to execution of `allDone()` */
   constructor(decimals = 3) {
     this.startTs = performance.now();
     this.decimals = decimals;
