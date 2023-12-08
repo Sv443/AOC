@@ -8,7 +8,7 @@ const digitNames = {
 
 async function run() {
   //#SECTION part 1
-  const input1 = await getInput(1, 1);
+  const input1 = await getInput(1);
   let sum1 = 0;
   
   for(const line of input1) {
@@ -22,9 +22,14 @@ async function run() {
   }
 
   //#SECTION part 2
-  // yes I know prepping the input data is kinda cheating but I don't care anymore
-  // also having that kind of unspoken detail on the first day is a class A dick move by AOC so they can suck it
-  const input2 = await getInput(1, 2);
+  let input2 = await getInput(1);
+
+  // yes this is the lazy and resource heavy way but idc + ratio
+  for(const [key, val] of Object.entries(digitNames)) {
+    // replace "one" with "o1e", "two" with "t2o", etc.
+    input2 = input2.map(line => line.replace(new RegExp(key, "g"), `${key.at(0)}${val}${key.at(-1)}`));
+  }
+
   let sum2 = 0;
   
   for(const line of input2) {
