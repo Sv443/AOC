@@ -1,11 +1,10 @@
 import { readdir } from "node:fs/promises";
-import { join, resolve } from "node:path";
+import { join, relative, resolve } from "node:path";
 import k from "kleur";
 import prompt from "prompts";
 import { exists } from "./utils.js";
 
 const daysPath = resolve("./src/days/");
-const outDaysPath = resolve("./out/src/days/");
 
 async function run() {
   let runDayNum: number;
@@ -38,14 +37,16 @@ async function run() {
     process.exit(0);
   }
 
-  const importPath = join(outDaysPath, `/${runDayNum}/index.js`);
+  const importPath = join(daysPath, `/${runDayNum}/index.ts`);
   if(!(await exists(importPath))) {
     console.error(k.red(`Couldn't run day ${runDayNum}:\n`) + `File '${importPath}' doesn't exist\n`);
     process.exit(1);
   }
 
-  console.log(`Running the code of day ${runDayNum}...\n`);
-  await import(importPath);
+  console.log(`Running day ${runDayNum}'s code at '${relative(".", importPath)}'\n`);
+  const imP = importPath.startsWith("file") ? importPath : `file://${importPath}`;
+  console.log(imP);
+  await import(imP);
 }
 
 async function getDays() {
