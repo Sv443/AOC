@@ -11,5 +11,5 @@
 
 <br>
 
-All code is licensed under the [WTFPL license.](http://www.wtfpl.net/)  
+All code is licensed under the [Unlicense.](./LICENSE.txt)  
 Do whatever you want with it (except criticizing me for bad code lol).
