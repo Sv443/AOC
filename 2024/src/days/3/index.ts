@@ -2,7 +2,7 @@ import k from "kleur";
 import { getInput } from "@/utils.js";
 
 async function run() {
-  const aocDay = Number(import.meta.url.split("/").at(-2)! ?? 0);
+  const aocDay = Number(import.meta.url.split("/").at(-2) ?? 0);
   const input = await getInput(aocDay);
 
   //#region part 1
@@ -39,6 +39,7 @@ async function run() {
 
   console.log(`${k.green("Part 1:")} ${k.yellow(res1)}`);
   console.log(`${k.green("Part 2:")} ${k.yellow(res2)}`);
+  console.log();
 }
 
 run();
