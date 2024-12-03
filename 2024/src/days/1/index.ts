@@ -1,11 +1,11 @@
 import k from "kleur";
-import { getInput } from "../../utils.js";
+import { getInputLines } from "@/utils.js";
 
 async function run() {
   const aocDay = Number(import.meta.url.split("/").at(-2)! ?? 0);
-  const input = await getInput(aocDay);
+  const input = await getInputLines(aocDay);
 
-  //#SECTION part 1
+  //#region part 1
   let res1 = 0;
   {
     const list1 = [] as number[];
@@ -24,7 +24,7 @@ async function run() {
       res1 += Math.abs(list1[i]! - list2[i]!);
   }
 
-  //#SECTION part 2
+  //#region part 2
   let res2 = 0;
   {
     const list1 = [] as number[];
