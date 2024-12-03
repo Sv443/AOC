@@ -4,16 +4,23 @@ import { access, readFile, constants as fsConstants } from "node:fs/promises";
 import k from "kleur";
 
 /** Parses the given input file and returns its lines (if splitRegex is left on its default) */
-export async function getInput(day: number, suffix: string | number | undefined = undefined, allowEmptyLines = false, splitRegex = /\n/gm) {
+export async function getInputLines(day: number, suffix: string | number | undefined = undefined, allowEmptyLines = false, splitRegex = /\n/gm) {
+  const lines = (await getInput(day, suffix))
+    .split(splitRegex);
+
+  return allowEmptyLines
+    ? lines
+    : lines.filter(l => l.length > 0);
+}
+
+/** Reads the input file for the given day and returns it as a plain string */
+export async function getInput(day: number, suffix: string | number | undefined = undefined) {
   const inputPath = resolve(`./src/days/${day}/input${suffix ?? ""}.txt`);
 
   if(!(await exists(inputPath)))
-    throw new Error(`Can't get lines from input${suffix ?? ""}.txt for day ${day} as file doesn't exist`);
+    throw new Error(`Can't get input${suffix ?? ""}.txt for day ${day} as file doesn't exist. Expected path: '${inputPath}'`);
 
-  const lines = String(await readFile(inputPath))
-    .split(splitRegex);
-
-  return allowEmptyLines ? lines : lines.filter(l => l.length > 0);
+  return String(await readFile(inputPath));
 }
 
 /**
