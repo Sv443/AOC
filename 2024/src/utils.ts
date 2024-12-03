@@ -1,6 +1,6 @@
 import { resolve } from "node:path";
 import { performance } from "node:perf_hooks";
-import { access, readFile, constants as fsConstants } from "node:fs/promises";
+import { constants as fsconst, readFile, stat } from "node:fs/promises";
 import k from "kleur";
 
 /** Parses the given input file and returns its lines (if splitRegex is left on its default) */
@@ -17,7 +17,7 @@ export async function getInputLines(day: number, suffix: string | number | undef
 export async function getInput(day: number, suffix: string | number | undefined = undefined) {
   const inputPath = resolve(`./src/days/${day}/input${suffix ?? ""}.txt`);
 
-  if(!(await exists(inputPath)))
+  if(isNaN(day) || !(await fileExists(inputPath)))
     throw new Error(`Can't get input${suffix ?? ""}.txt for day ${day} as file doesn't exist. Expected path: '${inputPath}'`);
 
   return String(await readFile(inputPath));
@@ -34,11 +34,13 @@ export async function runSequentially(...promises: ((() => Promise<unknown>) | P
       await prom;
 }
 
-/** Returns whether the file exists and is accessible using the provided mode. */
-export async function exists(path: string, mode = fsConstants.R_OK) {
+/** Returns whether the file exists and is accessible using the provided mode (read-only by default). */
+export async function fileExists(path: string, mode = fsconst.R_OK) {
   try {
-    await access(path, mode);
-    return true;
+    const stats = await stat(path);
+    if(stats.isFile() && (stats.mode & mode) === mode)
+      return true;
+    return false;
   }
   catch {
     return false;
