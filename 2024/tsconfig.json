@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "rootDir": ".",
     "target": "ES2022",
     "module": "NodeNext",
-    "rootDir": ".",
-    "outDir": "./out/",
     "moduleResolution": "NodeNext",
+    "noEmit": true,
     "sourceMap": true,
     "useDefineForClassFields": true,
     "allowJs": false,
@@ -17,9 +17,9 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "noUncheckedIndexedAccess": true,
+    "paths": {
+      "@day/*": ["src/days/*"],
+      "@/*": ["src/*"],
+    }
   },
-  "exclude": [
-    "**/template.ts",
-  ],
 }
-  
