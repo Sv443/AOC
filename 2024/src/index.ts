@@ -26,27 +26,27 @@ async function run() {
       runDayNum = parseInt(runDay);
     }
     else
-      runDayNum = Number(days[0]);
+      runDayNum = parseInt(days[0]);
   }
   else
     runDayNum = parseInt(dayArg);
 
-  if(runDayNum === undefined || isNaN(runDayNum)) {
+  if(isNaN(Number(runDayNum))) {
     console.error(k.yellow("No day chosen. Exiting."));
-    process.exit(0);
+    return setImmediate(() => process.exit(0));
   }
 
   const importPath = join(daysPath, `/${runDayNum}/index.ts`);
   if(!(await fileExists(importPath))) {
     console.error(k.red(`Couldn't run day ${runDayNum}:\n`) + `File '${importPath}' doesn't exist\n`);
-    process.exit(1);
+    return setImmediate(() => process.exit(1));
   }
 
   console.log(`Running day ${runDayNum}'s code (at '${relative(".", importPath)}'):\n`);
   await import(importPath.startsWith("file") ? importPath : `file://${importPath}`);
 }
 
-/** Returns an array of all available days */
+/** Returns an array of all available days, sorted descending by default */
 async function getDays(reverse = true) {
   const revFac = reverse ? -1 : 1;
   return (await readdir(daysPath))
